@@ -81,6 +81,9 @@ def run_synthetic_generator(
     and returns generation statistics along with scored transactions."""
 
     if reset_db:
+        from api.models import CaseEvent, FraudCase
+        db.query(CaseEvent).delete()
+        db.query(FraudCase).delete()
         db.query(Alert).delete()
         db.query(FraudResult).delete()
         db.query(Transaction).delete()

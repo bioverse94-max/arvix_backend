@@ -24,7 +24,7 @@ def upgrade() -> None:
     op.create_table('accounts',
     sa.Column('account_id', sa.String(), nullable=False),
     sa.Column('vpa', sa.String(), nullable=True),
-    sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=True),
+    sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('CURRENT_TIMESTAMP'), nullable=True),
     sa.Column('kyc_tier', sa.String(), nullable=True),
     sa.Column('account_age_days', sa.Integer(), nullable=True),
     sa.Column('current_risk_tier', sa.String(), nullable=True),
@@ -39,7 +39,7 @@ def upgrade() -> None:
     sa.Column('amount', sa.Numeric(precision=14, scale=2), nullable=False),
     sa.Column('timestamp', sa.DateTime(timezone=True), nullable=False),
     sa.Column('status', sa.String(), nullable=False),
-    sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=False),
+    sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('CURRENT_TIMESTAMP'), nullable=False),
     sa.ForeignKeyConstraint(['receiver_account_id'], ['accounts.account_id'], ),
     sa.ForeignKeyConstraint(['sender_account_id'], ['accounts.account_id'], ),
     sa.PrimaryKeyConstraint('transaction_id')

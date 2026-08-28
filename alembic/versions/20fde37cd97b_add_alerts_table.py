@@ -33,8 +33,8 @@ def upgrade() -> None:
     sa.Column('risk_score', sa.Numeric(precision=5, scale=2), nullable=True),
     sa.Column('assigned_to', sa.String(), nullable=True),
     sa.Column('resolution_notes', sa.Text(), nullable=True),
-    sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=False),
-    sa.Column('updated_at', sa.DateTime(timezone=True), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=False),
+    sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('CURRENT_TIMESTAMP'), nullable=False),
+    sa.Column('updated_at', sa.DateTime(timezone=True), server_default=sa.text('CURRENT_TIMESTAMP'), nullable=False),
     sa.Column('resolved_at', sa.DateTime(timezone=True), nullable=True),
     sa.ForeignKeyConstraint(['transaction_id'], ['transactions.transaction_id'], ),
     sa.PrimaryKeyConstraint('alert_id')

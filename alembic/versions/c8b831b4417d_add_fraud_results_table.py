@@ -33,7 +33,7 @@ def upgrade() -> None:
     sa.Column('model_version', sa.String(), nullable=True),
     sa.Column('pol_features', sa.Text(), nullable=True),
     sa.Column('graph_features', sa.Text(), nullable=True),
-    sa.Column('scored_at', sa.DateTime(timezone=True), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=False),
+    sa.Column('scored_at', sa.DateTime(timezone=True), server_default=sa.text('CURRENT_TIMESTAMP'), nullable=False),
     sa.ForeignKeyConstraint(['transaction_id'], ['transactions.transaction_id'], ),
     sa.PrimaryKeyConstraint('result_id'),
     sa.UniqueConstraint('transaction_id')

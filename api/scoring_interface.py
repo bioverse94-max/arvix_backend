@@ -282,12 +282,24 @@ def store_scoring_results(results: List[ScoringResult], db: Session) -> int:
     Skips transactions that already have a FraudResult.
     Returns the number of new results stored.
     """
+    if not results:
+        return 0
+
+    # Fetch existing transaction IDs to avoid N+1 queries
+    all_txn_ids = [r.transaction_id for r in results]
+    existing_txn_ids = set()
+    for i in range(0, len(all_txn_ids), 500):
+        chunk = all_txn_ids[i:i+500]
+        rows = db.query(FraudResult.transaction_id).filter(
+            FraudResult.transaction_id.in_(chunk)
+        ).all()
+        for row in rows:
+            existing_txn_ids.add(row[0])
+
     stored = 0
+    new_results = []
     for r in results:
-        existing = db.query(FraudResult).filter(
-            FraudResult.transaction_id == r.transaction_id
-        ).first()
-        if existing:
+        if r.transaction_id in existing_txn_ids:
             continue
 
         fraud_result = FraudResult(
@@ -303,7 +315,12 @@ def store_scoring_results(results: List[ScoringResult], db: Session) -> int:
             pol_features=json.dumps(r.pol_features),
             graph_features=json.dumps(r.graph_features),
         )
-        db.add(fraud_result)
+        new_results.append(fraud_result)
         stored += 1
+
+    if new_results:
+        for i in range(0, len(new_results), 1000):
+            db.bulk_save_objects(new_results[i : i + 1000])
+        db.commit()
 
     return stored

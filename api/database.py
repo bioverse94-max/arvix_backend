@@ -10,7 +10,13 @@ DATABASE_URL = os.environ.get("DATABASE_URL", "postgresql://sih_user:sih_passwor
 if DATABASE_URL.startswith("sqlite"):
     engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
 else:
-    engine = create_engine(DATABASE_URL)
+    # Supabase (Postgres) recommended settings
+    engine = create_engine(
+        DATABASE_URL,
+        pool_pre_ping=True,       # Check connection health before using
+        pool_size=10,             # Keep a reasonable pool size
+        max_overflow=20           # Allow temporary burst
+    )
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 Base = declarative_base()

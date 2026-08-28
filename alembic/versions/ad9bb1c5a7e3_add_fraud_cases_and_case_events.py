@@ -31,8 +31,8 @@ def upgrade() -> None:
     sa.Column('assigned_to', sa.String(), nullable=True),
     sa.Column('findings', sa.Text(), nullable=True),
     sa.Column('resolution', sa.Text(), nullable=True),
-    sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=False),
-    sa.Column('updated_at', sa.DateTime(timezone=True), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=False),
+    sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('CURRENT_TIMESTAMP'), nullable=False),
+    sa.Column('updated_at', sa.DateTime(timezone=True), server_default=sa.text('CURRENT_TIMESTAMP'), nullable=False),
     sa.Column('closed_at', sa.DateTime(timezone=True), nullable=True),
     sa.ForeignKeyConstraint(['alert_id'], ['alerts.alert_id'], ),
     sa.PrimaryKeyConstraint('case_id'),
@@ -47,7 +47,7 @@ def upgrade() -> None:
     sa.Column('actor', sa.String(), nullable=True),
     sa.Column('old_value', sa.String(), nullable=True),
     sa.Column('new_value', sa.String(), nullable=True),
-    sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=False),
+    sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('CURRENT_TIMESTAMP'), nullable=False),
     sa.ForeignKeyConstraint(['case_id'], ['fraud_cases.case_id'], ),
     sa.PrimaryKeyConstraint('event_id')
     )
