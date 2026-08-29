@@ -93,7 +93,7 @@ app = FastAPI(title="UPI Fraud Detection API", version="0.3.0")
 from fastapi.middleware.cors import CORSMiddleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://127.0.0.1:5173", "https://arvix-backend-4z22.onrender.com", "https://arvix-frontend-psi.vercel.app", "http://localhost:3000"],
+    allow_origins=["http://localhost:5173", "http://127.0.0.1:5173", "http://localhost:3000"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
