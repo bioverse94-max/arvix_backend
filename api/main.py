@@ -99,6 +99,19 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+@app.on_event("startup")
+def run_migrations():
+    import logging
+    from alembic.config import Config
+    from alembic import command
+    logging.info("Running database migrations...")
+    alembic_cfg = Config("alembic.ini")
+    try:
+        command.upgrade(alembic_cfg, "head")
+        logging.info("Database migrations applied successfully.")
+    except Exception as e:
+        logging.error(f"Error applying database migrations: {e}")
+
 class ValidationFailure(BaseModel):
     index: int
     errors: List[str]
