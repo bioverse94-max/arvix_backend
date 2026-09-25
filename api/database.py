@@ -7,6 +7,10 @@ load_dotenv()
 
 DATABASE_URL = os.environ.get("DATABASE_URL", "postgresql://sih_user:sih_password@localhost:5432/fraud_db")
 
+# Fix for SQLAlchemy 1.4+ not accepting 'postgres://' prefix
+if DATABASE_URL.startswith("postgres://"):
+    DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
+
 if DATABASE_URL.startswith("sqlite"):
     engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
 else:
